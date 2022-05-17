@@ -54,12 +54,18 @@ def index():
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    print(request.method)
+    imgb64 = open(request.get_json()['image'], 'rb').read()
+    imgb64 = base64.b64encode(imgb64).decode()
     image_base64 = request.get_json(force=True)['image']
+    
+    #image_base64 = base64.b64encode(image_base64).decode()
+    #print(image_base64)
+
     if image_base64 is None:
         return {'success': False, 'category': 'NULL'}
-    category = infer(image_base64, model)
-
+    category = infer(imgb64, model)
     return {'success': True, 'category': category}
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 3001)))
