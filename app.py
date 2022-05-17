@@ -39,7 +39,6 @@ def preprocess_image(image_base64):
 def infer(image_base64, model):
     image = preprocess_image(image_base64)
     image = np.expand_dims(image, axis=0)
-    print('Input shape: ', image.shape)
     category_id = model.predict(image)[0]
     category_id = np.argmax(category_id)
     category_name = id2class[category_id]
