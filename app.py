@@ -1,5 +1,6 @@
 import base64
 import io
+import os
 from imageio import imread
 import numpy as np
 import tensorflow as tf
