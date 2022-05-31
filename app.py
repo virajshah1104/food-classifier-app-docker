@@ -50,7 +50,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Hello, World!'
+    return 'Connection Successfull!'
 
 @app.route('/predict', methods=['POST'])
 def predict():
