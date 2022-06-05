@@ -10,7 +10,8 @@ from flask import Flask, request
 preprocessing_function = tf.keras.applications.resnet50.preprocess_input
 
 # ID to class
-id2class = {0: 'cheesecake', 1: 'donuts', 2: 'dumplings', 3: 'fried_rice', 4: 'burger', 5: 'omelette', 6: 'pancakes', 7: 'pizza', 8: 'steak', 9: 'tacos'}
+id2class = {0: 'Cheese Cake', 1: 'Donuts', 2: 'Dumplings', 3: 'Fried Rice', 4: 'Burger', 5: 'Omelette', 6: 'Pancakes', 7: 'Pizza', 8: 'Steak', 9: 'Tacos'}
+id2meal = {0: 'cheesecake', 1: 'donut', 2: 'dumpling', 3: 'rice', 4: 'burger', 5: 'omelette', 6: 'pancake', 7: 'pizza', 8: 'steak', 9: 'taco'}
 
 # Load model
 print('Loading model...')
@@ -44,7 +45,8 @@ def infer(image_base64, model):
     category_arr = model.predict(image)[0]
     category_id = np.argmax(category_arr)
     category_name = id2class[category_id]
-    return category_name, category_arr[category_id]
+    category_meal = id2meal[category_id]
+    return category_name, category_meal, category_arr[category_id]
 
 # Flask app
 app = Flask(__name__)
@@ -59,9 +61,9 @@ def predict():
     if image_base64 is None:
         return {'success': False, 'category': 'NULL'}
 
-    category, confidence = infer(image_base64, model)
+    category, meal, confidence = infer(image_base64, model)
 
-    return {'success': True, 'category': category, 'confidence': str(confidence)}
+    return {'success': True, 'category': category, 'meal': meal, 'confidence': str(confidence)}
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 3001)))
